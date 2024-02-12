@@ -22,11 +22,10 @@
             {{-- Div for button search --}}
             <div class="col-md-6">
                 <div class="form-group">
-                    <form action="/search" method="get">
+                    <form action="/search" method="get" id="btnsearchForm">
                         <div class="input-group">
                             <input type="" class="form-control" name="search" placeholder="Search ..." value="{{ isset($search) ? $search : ''}}">
-                            <button type="button" class="btn btn-primary">Search</button>
-
+                            <button type="button" id="btnsearch" class="btn btn-primary">Search</button>
                         </div>
                     </form>
                 </div>
@@ -58,5 +57,28 @@
             </tbody>
         </table>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#btnsearch').click(function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Get the form data
+                var formData = $('#btnsearchForm').serialize();
+
+                // Perform AJAX request
+                $.ajax({
+                    type: 'GET',
+                    url: '/search',
+                    data: formData,
+                    success: function(response) {
+                        // Update the table with the new data
+                        $('.table tbody').html(response);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
